@@ -23,9 +23,6 @@ publish-package:
   script:
     - pip install twine
     - poetry build
-    - ls dist
-    - echo ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi
-    - exit 1  # FIXME: blocking final command for now because it can only be done once per version
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
   when: manual
   rules:
