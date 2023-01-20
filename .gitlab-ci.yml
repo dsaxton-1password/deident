@@ -1,0 +1,32 @@
+stages:
+  - lint
+  - publish
+
+.python-base:
+  image: python:3.8-slim
+  before_script:
+    - apt-get update && apt-get install curl git gcc libjpeg-dev libffi-dev zlib1g-dev build-essential -y
+    - curl -sSL https://install.python-poetry.org | python - --version 1.2.0
+    - export PATH="$HOME/.local/bin:$PATH"
+    - poetry --version
+    - poetry config virtualenvs.in-project true
+    - poetry install
+
+check-black:
+  extends: .python-base
+  stage: lint
+  script: poetry run black . --check
+
+publish-package:
+  extends: .python-base
+  stage: publish
+  script:
+    - pip install twine
+    - poetry build
+    - ls dist
+    - echo ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi
+    - exit 1  # FIXME: blocking final command for now because it can only be done once per version
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+  when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
