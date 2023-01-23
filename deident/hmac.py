@@ -2,9 +2,16 @@ import os
 import hmac
 import hashlib
 
+import boto3
+
 key = os.environ.get("HMAC_SECRET")
 if not key:
-    raise RuntimeError("HMAC_SECRET environment variable must be set")
+    secretsmanager = boto3.client("secretsmanager")
+    key = secretsmanager.get_secret_value(SecretId="TODO")
+    if not key:
+        raise RuntimeError(
+            "Could not find HMAC key in either HMAC_SECRET environment variable or SecretsManager"
+        )
 key = bytes(key, "utf-8")
 
 
