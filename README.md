@@ -1,6 +1,6 @@
 # `deident`
 
-A simple Python module that provides a single function `deident.hmac.apply` to handle transformation of a list of string values using SHA256 HMAC. On import `deident` will attempt to grab an HMAC secret either from the environment variable `HMAC_SECRET` or from AWS SecretsManager using the environment variable `SECRET_NAME` as the secret ID if `HMAC_SECRET` isn't provided.
+A simple Python module that provides a single function `deident.hmac.apply` to handle transformation of a list of string values using SHA256 HMAC. On import `deident` will attempt to grab an HMAC secret either from the environment variable `HMAC_SECRET`, or from AWS SecretsManager using the environment variable `SECRET_NAME` as the secret ID if `HMAC_SECRET` isn't provided.
 
 Example:
 
