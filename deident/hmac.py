@@ -11,7 +11,7 @@ if not key:
         key = client.get_secret_value(SecretId=os.environ.get("SECRET_NAME"))
     except Exception as err:
         print(f"WARNING: {err}")
-        print(f"WARNING: HMAC key set to empty string")
+        print("WARNING: HMAC key set to empty string")
         key = ""
 key = bytes(key, "utf-8")
 
