@@ -11,5 +11,5 @@ if not key:
 key = bytes(key, "utf-8")
 
 
-def apply(messages: list) -> list:
-    return [hmac.digest(key, bytes(m, "utf-8"), hashlib.sha256).hex() for m in messages]
+def apply(message: str) -> str:
+    return hmac.digest(key, bytes(message, "utf-8"), hashlib.sha256).hex()
